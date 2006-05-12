@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 12;
 
 BEGIN { use_ok('Number::Nary'); }
 
@@ -19,6 +19,9 @@ BEGIN { use_ok('Number::Nary'); }
   eval { $enc->(6.2); };
   like($@, qr/integer/, "can't encode floats");
 
+  eval { $enc->(undef); };
+  like($@, qr/integer/, "can't encode undef");
+
   eval { $enc->("YOUR FACE"); };
   like($@, qr/integer/, "can't encode strings");
 
@@ -27,6 +30,9 @@ BEGIN { use_ok('Number::Nary'); }
 
   eval { $dec->('BABELFISH'); };
   like($@, qr/invalid/, "can't decode a value with unknown digits");
+
+  # XXX: Is this what we want? -- rjbs, 2006-05-11
+  is($dec->(undef), undef, "undef decodes to undef");
 }
 
 { # n_encode and n_decode
