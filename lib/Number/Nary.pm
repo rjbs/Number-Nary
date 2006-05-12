@@ -38,11 +38,25 @@ sub _generate_codec_pair {
 =head1 SYNOPSIS
 
 This module lets you convert numbers into strings that encode the number using
-the digit set of your choice.
+the digit set of your choice.  For example, you could get routines to convert
+to and from hex like so:
 
-  my ($enc5, $dec5) = n_codec('01234'); # base five
+  my ($enc_hex, $dec_hex) = n_codec('0123456789ABCDEF');
 
-  my $number = $enc5->('8675309'); # jenny's number for one-handed folk
+  my $hex = $enc_hex(255);  # sets $hex to FF
+  my $num = $dec_hex('A0'); # sets $num to 160
+
+This would be slow and stupid, since Perl already provides the means to easily
+and quickly convert between decimal and hex representations of numbers.
+Number::Nary's utility comes from the fact that it can encode into bases
+composed of arbitrary digit sets.
+
+  my ($enc, $dec) = n_codec('0123'); # base 4 (for working with nybbles?)
+
+  # base64
+  my ($enc, $dec) = n_codec(
+    join('', 'A' .. 'Z', 'a' .. 'z', 0 .. 9, '+', '/', '=')
+  );
 
 =head1 FUNCTIONS
 
@@ -53,13 +67,16 @@ the digit set of your choice.
 This routine returns a reference to a subroutine which will encode numbers into
 the given set of digits and a reference which will do the reverse operation.
 
-This routine will croak if the digit string contains repeated digits.
+The digits may be given as a string or an arrayref.  This routine will croak if
+the set of digits contains repeated digits, or if not all digits are of the
+same length of characters.
 
 The encode sub will croak if it is given input other than a non-negative
 integer. 
 
 The decode sub will croak if given a string that contains characters not in the
-digit string.
+digit string, or if the lenth of the string to decode is not a multiple of the
+length of the component digits.
 
 =cut
 
@@ -184,7 +201,7 @@ a fun little distraction.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005 Ricardo Signes, all rights reserved.
+Copyright 2005-2006 Ricardo Signes, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
