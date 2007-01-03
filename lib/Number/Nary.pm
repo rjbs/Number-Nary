@@ -9,13 +9,13 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.100
+version 0.102
 
  $Id$
 
 =cut
 
-our $VERSION = '0.100';
+our $VERSION = '0.102';
 
 use Carp qw(croak);
 use List::MoreUtils qw(uniq);
