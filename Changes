@@ -1,5 +1,9 @@
 Revision history for Number-Nary
 
+0.102   2007-01-03
+        add predecode argument, originally requested by NUFFIN
+        add recloc.t
+
 0.100   2006-05-11
         clean up documents
         wide digit support
