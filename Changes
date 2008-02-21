@@ -1,5 +1,9 @@
 Revision history for Number-Nary
 
+0.103   2008-02-21
+        add support for (some) unambiguous of variable-length digits (thanks to
+        MJD and WONKO for advice)
+
 0.102   2007-01-03
         add predecode argument, originally requested by NUFFIN
         add recloc.t

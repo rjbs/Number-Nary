@@ -9,11 +9,11 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.102
+version 0.103
 
 =cut
 
-our $VERSION = '0.102';
+our $VERSION = '0.103';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
@@ -72,7 +72,9 @@ the given set of digits and a reference which will do the reverse operation.
 
 The digits may be given as a string or an arrayref.  This routine will croak if
 the set of digits contains repeated digits, or if there could be ambiguity
-in decoding a string of the given digits.
+in decoding a string of the given digits.  (Number::Nary is overly aggressive
+about weeding out possibly ambiguous digit sets, for the sake of the author's
+sanity.)
 
 The encode sub will croak if it is given input other than a non-negative
 integer. 
@@ -106,6 +108,28 @@ sub _split_len_iterator {
   }
 }
 
+sub _split_digit_iterator {
+  my ($digits) = @_;
+
+  sub {
+    my ($string, $callback) = @_;
+    my @digits;
+    ITER: while (length $string) {
+      for (@$digits) {
+        if (index($string, $_) == 0) {
+          push @digits, substr($string, 0, length $_, '');
+          next ITER;
+        }
+      }
+      croak "could not decompose string '$string'";
+    }
+
+    for (1 .. @digits) {
+      $callback->($digits[-$_], $_);
+    }
+  }
+}
+
 sub _set_iterator {
   my ($digits, $length_ref) = @_;
 
@@ -129,28 +153,6 @@ sub _set_iterator {
   }
 
   return _split_digit_iterator($digits);
-}
-
-sub _split_digit_iterator {
-  my ($digits) = @_;
-
-  sub {
-    my ($string, $callback) = @_;
-    my @digits;
-    ITER: while (length $string) {
-      for (@$digits) {
-        if (index($string, $_) == 0) {
-          push @digits, substr($string, 0, length $_, '');
-          next ITER;
-        }
-      }
-      croak "could not decompose string '$string'";
-    }
-
-    for (1 .. @digits) {
-      $callback->($digits[-$_], $_);
-    }
-  }
 }
 
 sub n_codec {
@@ -269,6 +271,10 @@ part.
 Thanks, Jesse Vincent.  When I remarked, on IRC, that this would be trivial to
 do, he said, "Great.  Would you mind doing it?"  (Well, more or less.)  It was
 a fun little distraction.
+
+Mark Jason Dominus and Michael Peters offered some useful advice on how to weed
+out ambiguous digit sets, enabling me to allow digit sets made up of
+varying-length digits.
 
 =head1 COPYRIGHT & LICENSE
 
