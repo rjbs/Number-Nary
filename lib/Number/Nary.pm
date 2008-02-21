@@ -130,9 +130,31 @@ sub _set_iterator {
     }
   }
 
-  die "variable-length digit sets not implemented";
+  return _split_digit_iterator($digits);
 }
 
+sub _split_digit_iterator {
+  my ($digits) = @_;
+
+  sub {
+    my ($string, $callback) = @_;
+    my @digits;
+    ITER: while (length $string) {
+      for (@$digits) {
+        if (index($string, $_) == 0) {
+          push @digits, substr($string, 0, length $_);
+          next ITER;
+        }
+      }
+      croak "could not decompose string '$string'";
+    }
+
+    for (reverse 1 .. @digits) {
+      $callback->($digits[$_-1], $_);
+    }
+  }
+}
+      
 sub n_codec {
 	my ($digit_set, $arg) = @_;
 
