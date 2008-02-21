@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 
 BEGIN { use_ok('Number::Nary'); }
 
@@ -36,5 +36,17 @@ BEGIN { use_ok('Number::Nary'); }
   like($@, qr/invalid/, "can't decode a value with unknown digits");
 }
 
-eval { n_codec([qw(do ray mi fa so la ti)]); };
-like($@, qr/uniform length/, "we can't use digits of varying lengths");
+is(
+  Number::Nary::n_decode('rafatido', [qw(do ra mi fa so la ti)]),
+  532,
+  'double-check one off decoding with fixed-length digits'
+);
+
+is(
+  Number::Nary::n_decode('rayfatido', [qw(do ray mi fa so la ti)]),
+  532,
+  'decoding with var-length digits'
+);
+
+eval { n_codec([qw(foo foobar)]); };
+like($@, qr/ambiguous/, "we can't use an ambiguous set of digits");

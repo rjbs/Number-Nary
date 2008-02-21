@@ -11,8 +11,6 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 version 0.102
 
- $Id$
-
 =cut
 
 our $VERSION = '0.102';
@@ -101,7 +99,7 @@ sub _split_len_iterator {
     croak "string length is not a multiple of digit length"
       unless $places == int $places;
 
-    for my $position (reverse 1 .. $places) {
+    for my $position (1 .. $places) {
       my $digit = substr $string, (-$length * $position), $length;
       $callback->($digit, $position);
     }
@@ -142,19 +140,19 @@ sub _split_digit_iterator {
     ITER: while (length $string) {
       for (@$digits) {
         if (index($string, $_) == 0) {
-          push @digits, substr($string, 0, length $_);
+          push @digits, substr($string, 0, length $_, '');
           next ITER;
         }
       }
       croak "could not decompose string '$string'";
     }
 
-    for (reverse 1 .. @digits) {
-      $callback->($digits[$_-1], $_);
+    for (1 .. @digits) {
+      $callback->($digits[-$_], $_);
     }
   }
 }
-      
+
 sub n_codec {
 	my ($digit_set, $arg) = @_;
 
@@ -195,12 +193,13 @@ sub n_codec {
     
     $string = $arg->{predecode}->($string) if $arg->{predecode};
 
-    my $value    = 0;
+    my $value = 0;
 
     $iterator->($string, sub {
       my ($digit, $position) = @_;
       croak "string to decode contains invalid digits"
         unless exists $digit_value{$digit};
+
       $value += $digit_value{$digit}  *  @digits ** ($position++ - 1);
     });
 
