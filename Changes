@@ -1,5 +1,8 @@
 Revision history for Number-Nary
 
+0.104   2008-04-07
+        repackage without all the resource fork files; thanks, OS X!
+
 0.103   2008-02-21
         add support for (some) unambiguous of variable-length digits (thanks to
         MJD and WONKO for advice)

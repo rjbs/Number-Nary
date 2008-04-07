@@ -9,11 +9,11 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.103
+version 0.104
 
 =cut
 
-our $VERSION = '0.103';
+our $VERSION = '0.104';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
