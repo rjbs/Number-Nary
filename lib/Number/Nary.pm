@@ -46,8 +46,8 @@ to and from hex like so:
 
   my ($enc_hex, $dec_hex) = n_codec('0123456789ABCDEF');
 
-  my $hex = $enc_hex(255);  # sets $hex to FF
-  my $num = $dec_hex('A0'); # sets $num to 160
+  my $hex = $enc_hex->(255);  # sets $hex to FF
+  my $num = $dec_hex->('A0'); # sets $num to 160
 
 This would be slow and stupid, since Perl already provides the means to easily
 and quickly convert between decimal and hex representations of numbers.
@@ -87,6 +87,9 @@ Valid arguments to be passed in the second parameter are:
 
   predecode  - if given, this coderef will be used to preprocess strings
                passed to the decoder
+
+  postencode - if given, this coderef will be used to postprocess strings
+               produced by the encoder
 
 =cut
 
@@ -156,9 +159,9 @@ sub _set_iterator {
 }
 
 sub n_codec {
-	my ($digit_set, $arg) = @_;
+  my ($digit_set, $arg) = @_;
 
-	my @digits;
+  my @digits;
 
   if (ref $digit_set) {
     croak "digit set must be a string or arrayref"
@@ -177,13 +180,15 @@ sub n_codec {
       if not defined $value
       or $value !~ /\A\d+\z/;
 
-      my $string = '';
-      while (1) {
-        my $digit = $value % @digits;
-        $value = int($value / @digits);
-        $string = "$digits[$digit]$string";
-        last unless $value;
-      }
+    my $string = '';
+    while (1) {
+      my $digit = $value % @digits;
+      $value = int($value / @digits);
+      $string = "$digits[$digit]$string";
+      last unless $value;
+    }
+    
+    $string = $arg->{postencode}->($string) if $arg->{postencode};
     return $string;
   };
 
