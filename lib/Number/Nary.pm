@@ -1,5 +1,5 @@
 package Number::Nary;
-
+use 5.006;
 use warnings;
 use strict;
 
