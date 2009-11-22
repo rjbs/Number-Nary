@@ -1,5 +1,9 @@
 Revision history for Number-Nary
 
+0.106   2009-11-22
+        support unary
+        decode the empty string to 0
+
 0.105   2008-04-18
         add a "postencode" argument and an example (in t/google.t) of use for
         Google Chart API extended encoding

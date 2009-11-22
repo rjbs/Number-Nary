@@ -9,11 +9,11 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.105
+version 0.106
 
 =cut
 
-our $VERSION = '0.105';
+our $VERSION = '0.106';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
@@ -180,6 +180,8 @@ sub n_codec {
       if not defined $value
       or $value !~ /\A\d+\z/;
 
+    return $digits[0] x $value if @digits == 1;
+
     my $string = '';
     while (1) {
       my $digit = $value % @digits;
@@ -187,7 +189,7 @@ sub n_codec {
       $string = "$digits[$digit]$string";
       last unless $value;
     }
-    
+
     $string = $arg->{postencode}->($string) if $arg->{postencode};
     return $string;
   };
@@ -196,8 +198,8 @@ sub n_codec {
 
   my $decode_sub = sub {
     my ($string) = @_;
-    return unless $string;
-    
+    return unless defined $string;
+
     $string = $arg->{predecode}->($string) if $arg->{predecode};
 
     my $value = 0;
@@ -207,7 +209,11 @@ sub n_codec {
       croak "string to decode contains invalid digits"
         unless exists $digit_value{$digit};
 
-      $value += $digit_value{$digit}  *  @digits ** ($position++ - 1);
+      # Stupid hack, but I'm just cramming unary support in here at the moment.
+      # It can be polished up later, if needed.  -- rjbs, 2009-11-22
+      $value += @digits == 1
+              ? 1
+              : ($digit_value{$digit}  *  @digits ** ($position++ - 1));
     });
 
     return $value;

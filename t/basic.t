@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 16;
 
 BEGIN { use_ok('Number::Nary'); }
 
@@ -52,3 +52,17 @@ BEGIN { use_ok('Number::Nary'); }
 
 eval { n_codec('ABCDEE'); };
 like($@, qr/repeated/, "you can't build codec with non-unique base string");
+
+{
+  my ($enc, $dec) = n_codec('1');
+
+  is($enc->(10), '1111111111', "10 in '1' is 1111111111");
+  is($dec->('1111111111'), 10, "...and the reverse works");
+}
+
+{
+  my ($enc, $dec) = n_codec('0');
+
+  is($enc->(10), '0000000000', "10 in '0' is 0000000000");
+  is($dec->('0000000000'), 10, "...and the reverse works");
+}
