@@ -1,5 +1,8 @@
 Revision history for Number-Nary
 
+0.107   2009-11-22
+        do not skip postencode on unary encode
+
 0.106   2009-11-22
         support unary
         decode the empty string to 0

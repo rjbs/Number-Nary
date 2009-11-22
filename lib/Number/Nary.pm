@@ -9,11 +9,11 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.106
+version 0.107
 
 =cut
 
-our $VERSION = '0.106';
+our $VERSION = '0.107';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
@@ -180,14 +180,17 @@ sub n_codec {
       if not defined $value
       or $value !~ /\A\d+\z/;
 
-    return $digits[0] x $value if @digits == 1;
-
     my $string = '';
-    while (1) {
-      my $digit = $value % @digits;
-      $value = int($value / @digits);
-      $string = "$digits[$digit]$string";
-      last unless $value;
+
+    if (@digits == 1) {
+      $string = $digits[0] x $value;
+    } else {
+      while (1) {
+        my $digit = $value % @digits;
+        $value = int($value / @digits);
+        $string = "$digits[$digit]$string";
+        last unless $value;
+      }
     }
 
     $string = $arg->{postencode}->($string) if $arg->{postencode};
