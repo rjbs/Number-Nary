@@ -18,6 +18,7 @@ our $VERSION = '0.107';
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
 use List::MoreUtils qw(uniq);
+use UDCode ();
 
 use Sub::Exporter -setup => {
   exports => [ qw(n_codec n_encode n_decode) ],
@@ -145,15 +146,7 @@ sub _set_iterator {
 
   return _split_len_iterator($lengths[0]) if @lengths == 1;
 
-  for my $i (0 .. $#$digits) {
-    my $di = $digits->[$i];
-    for my $j (0 ..$#$digits) {
-      next if $i == $j;
-      my $dj = $digits->[$j];
-
-      croak "digit set may be ambiguous" if index($di, $dj) == 0;
-    }
-  }
+  croak "digit set may be ambiguous" if ! UDCode::is_udcode(@$digits);
 
   return _split_digit_iterator($digits);
 }

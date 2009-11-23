@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 BEGIN { use_ok('Number::Nary'); }
 
@@ -48,5 +48,12 @@ is(
   'decoding with var-length digits'
 );
 
-eval { n_codec([qw(foo foobar)]); };
-like($@, qr/ambiguous/, "we can't use an ambiguous set of digits");
+{
+  my $ok = eval { n_codec([qw(foo foobar)]); 1 };
+  ok($ok, "(foo, foobar) is not ambiguous");
+}
+
+{
+  my $ok = eval { n_codec([qw(bar foo foobar)]); 1 };
+  like($@, qr/ambiguous/, "we can't use an ambiguous set of digits");
+}
