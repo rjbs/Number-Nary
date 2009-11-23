@@ -1,5 +1,9 @@
 Revision history for Number-Nary
 
+0.108   2009-11-22
+        finally require UDCode, which MJD graciously wrote for us to use
+        mention Math::BaseCalc in docs
+
 0.107   2009-11-22
         do not skip postencode on unary encode
 

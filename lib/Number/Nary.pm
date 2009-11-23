@@ -9,11 +9,11 @@ Number::Nary - encode and decode numbers as n-ary strings
 
 =head1 VERSION
 
-version 0.107
+version 0.108
 
 =cut
 
-our $VERSION = '0.107';
+our $VERSION = '0.108';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
@@ -282,6 +282,12 @@ a fun little distraction.
 Mark Jason Dominus and Michael Peters offered some useful advice on how to weed
 out ambiguous digit sets, enabling me to allow digit sets made up of
 varying-length digits.
+
+=head1 SEE ALSO
+
+L<Math::BaseCalc> is in the same problem space wth Number::Nary.  It provides
+only an OO interface and does not reliably handle multicharacter digits or
+recognize ambiguous digit sets.
 
 =head1 COPYRIGHT & LICENSE
 
