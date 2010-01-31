@@ -5,5 +5,6 @@ requires('Test::More'      => 0);
 requires('List::MoreUtils' => 0.09);
 requires('Sub::Exporter'   => 0.90);
 requires('UDCode'          => 0);
+auto_manifest;
 extra_tests;
 WriteAll;
