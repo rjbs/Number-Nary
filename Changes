@@ -1,5 +1,13 @@
 Revision history for Number-Nary
 
+{{$NEXT}}
+
+1.100311  2010-01-31 15:55:15 America/New_York
+          further packaging fixes
+
+1.100310  2010-01-31 15:13:19 America/New_York
+        rebuild distribution using Dist::Zilla
+
 0.108   2009-11-22
         finally require UDCode, which MJD graciously wrote for us to use
         mention Math::BaseCalc in docs
