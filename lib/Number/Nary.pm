@@ -7,13 +7,7 @@ use strict;
 
 Number::Nary - encode and decode numbers as n-ary strings
 
-=head1 VERSION
-
-version 0.108
-
 =cut
-
-our $VERSION = '0.108';
 
 use Carp qw(croak);
 use Scalar::Util qw(reftype);
