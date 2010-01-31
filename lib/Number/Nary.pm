@@ -10,8 +10,8 @@ Number::Nary - encode and decode numbers as n-ary strings
 =cut
 
 use Carp qw(croak);
-use Scalar::Util qw(reftype);
-use List::MoreUtils qw(uniq);
+use Scalar::Util 0.90 qw(reftype);
+use List::MoreUtils 0.09 qw(uniq);
 use UDCode ();
 
 use Sub::Exporter -setup => {
