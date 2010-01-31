@@ -1,13 +1,8 @@
-package Number::Nary;
 use 5.006;
 use warnings;
 use strict;
-
-=head1 NAME
-
-Number::Nary - encode and decode numbers as n-ary strings
-
-=cut
+package Number::Nary;
+# ABSTRACT: encode and decode numbers as n-ary strings
 
 use Carp qw(croak);
 use Scalar::Util 0.90 qw(reftype);
@@ -56,9 +51,7 @@ composed of arbitrary digit sets.
     join('', 'A' .. 'Z', 'a' .. 'z', 0 .. 9, '+', '/', '=')
   );
 
-=head1 FUNCTIONS
-
-=head2 n_codec
+=func n_codec
 
   my ($encode_sub, $decode_sub) = n_codec($digit_string, \%arg);
 
@@ -212,7 +205,7 @@ sub n_codec {
   return ($encode_sub, $decode_sub);
 }
 
-=head2 n_encode
+=func n_encode
 
   my $string = n_encode($value, $digit_string);
 
@@ -220,7 +213,7 @@ This encodes the given value into a string using the given digit string.  It is
 written in terms of C<n_codec>, above, so it's not efficient at all for
 multiple uses in one process.
 
-=head2 n_decode
+=func n_decode
 
   my $number = n_decode($string, $digit_string);
 
@@ -246,18 +239,6 @@ C<codec_pair> group as follows:
 
 For more information on this kind of exporting, see L<Sub::Exporter>.
 
-=head1 AUTHOR
-
-Ricardo Signes, C<< <rjbs at cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-number-nary@rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Number-Nary>.
-I will be notified, and then you'll automatically be notified of progress on
-your bug as I make changes.
-
 =head1 SECRET ORIGINS
 
 I originally used this system to produce unique worksheet names in Excel.  I
@@ -282,13 +263,6 @@ varying-length digits.
 L<Math::BaseCalc> is in the same problem space wth Number::Nary.  It provides
 only an OO interface and does not reliably handle multicharacter digits or
 recognize ambiguous digit sets.
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2005-2006 Ricardo Signes, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
 
 =cut
 
