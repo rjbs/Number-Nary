@@ -1,8 +1,8 @@
-use 5.006;
-use warnings;
-use strict;
 package Number::Nary;
 # ABSTRACT: encode and decode numbers as n-ary strings
+
+use strict;
+use warnings;
 
 use Carp qw(croak);
 use Scalar::Util 0.90 qw(reftype);
